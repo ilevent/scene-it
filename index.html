@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>A-Frame Lab</title>
+    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+
+</head>
+
+<body>
+
+    <a-scene>
+        <a-sky id="background" src="seigaiha.png"></a-sky>
+        <a-assets>
+            <img src="field.jpg">
+            <img src="airport.jpg">
+            <img src="beach.jpg">
+            <img src="cityStreet.jpg">
+            <img src="cruise.jpg">
+            <img src="desert.jpg">
+            <img src="grandCentral.jpg">
+            <img src="office.jpg">
+            <img src="pond.jpg">
+            <img src="pool.jpg">
+            <img src="ship.jpg">
+            <a-asset-item id="optimerBoldFont" src="fl.json"></a-asset-item>
+
+            <img src="fashionshow.jpg">
+            <a-asset-item id="snakemtl" src="snake-obj/snake.mtl"></a-asset-item>
+            <a-asset-item id="snakeobj" src="snake-obj/snake.obj"></a-asset-item>
+
+            <audio id="desertsound" src="hiss.mp3" preload="auto"></audio>
+            <audio id="airportsound" src="plane.mp3" preload="auto"></audio>
+            <audio id="shipsound" src="ahoy.mp3" preload="auto"></audio>
+            <audio id="cruisesound" src="shiph.mp3" preload="auto"></audio>
+            <audio id="beachsound" src="ocean.mp3" preload="auto"></audio>
+            <audio id="poolsound" src="splash.mp3" preload="auto"></audio>
+            <audio id="citysound" src="honks.mp3" preload="auto"></audio>
+            <audio id="officesound" src="typing.mp3" preload="auto"></audio>
+            <audio id="pondsound" src="ribbit.mp3" preload="auto"></audio>
+            <audio id="trainsound" src="train.mp3" preload="auto"></audio>
+        </a-assets>
+
+        <a-entity id="camera">
+            <a-camera position="0 -0.5 7">
+                <a-cursor></a-cursor>
+            </a-camera>
+        </a-entity>
+
+        <a-text id="word" value="Hello" position="-6 -100 -3" color="white" scale="10 10 10"></a-text>
+
+        <a-entity id="home" visible="true" position="0 0 0">
+            <a-entity text-geometry="value: SCENE IT!; font: #optimerBoldFont" material="color: black;" position="-1.95 2.25 2"></a-entity>
+            <a-box position="0 0 2" scale="5 2 1" color="#5B7DB5">
+            </a-box>
+            <a-text value="READ ALOUD: Welcome to Scene It! Have the guessers ask yes or no questions about the scene displayed infront of the viewer. The object of the game is to have the guessers guess the scene based on the viewers answers. There is one hint per location. Make sure the volume is up so that the sound can be heard. Press the begin box to begin."
+                Position="0 0.15 3" color="black" align="center" scale="0.85 0.85 0.85"></a-text>
+            <a-text id="restartmessage" value="" visible="false" position="-2.272 1.6 2" scale="3 3 3" color="green"></a-text>
+            <a-box onclick="changeScene()" id="start" color="#57406B" position="-4 -.5 2" length=".5" width="1" height="1"></a-box>
+            <a-text value="Begin" scale="1 1 1" position="-3.9 -.3 3" color="black"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="airport" visible="false" position="0 -100 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4.1 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity sound="src:#airportsound; on: click">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="beach" visible="false" position="0 -200 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity id="airportsound" sound="src:#beachsound; on: click">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="cityStreet" visible="false" position="0 -300 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity id="airportsound" sound="src:#citysound; on: click">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="cruise" visible="false" position="0 -400 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity sound="src:#cruisesound; on: click; refDistance: 100">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="desert" visible="false" position="0 -500 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-box onclick="hint('desert')" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+            <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            <a-text id="deshinttext" color="blue" value="Click the snake!" visible="false" position="1 2 -5" scale="4 4 4"></a-text>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+
+            <a-entity id="snakesound" position="-20 0 0" sound="src:#desertsound; on: click" geometry="primitive: box; width: 4; height:4; length:4" material="opacity:0">
+                <a-obj-model src="#snakeobj" mtl="#snakemtl" scale=".01 .01 .01"> </a-obj-model>
+            </a-entity>
+        </a-entity>
+
+
+        <a-entity class="scenes" id="grandCentral" visible="false" position="0 -600 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity id="airportsound" sound="src:#trainsound; on: click; refDistance: 100">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="office" visible="false" position="0 -700 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity id="airportsound" sound="src:#officesound; on: click; refDistance: 100">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="pond" visible="false" position="0 -800 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity id="airportsound" sound="src:#pondsound; on: click; refDistance: 100">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="pool" visible="false" position="0 -900 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity id="airportsound" sound="src:#poolsound; on: click; refDistance: 100">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <a-entity class="scenes" id="ship" visible="false" position="0 -1000 0">
+            <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>
+            <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>
+            <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>
+            <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>
+            <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>
+            <a-entity sound="src:#shipsound; on: click; refDistance: 100">
+                <a-box onclick="hint(airportscene)" color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>
+                <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>
+            </a-entity>
+            <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>
+            <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>
+        </a-entity>
+
+        <!--<a-entity class="scenes" id="fashionshow" visible="false" position="0 -1100 0">-->
+        <!--    <a-box onclick="rightAnswer()" color="red" height="2" width="3" depth="2" position="-7 5 -5"></a-box>-->
+        <!--    <a-text color="black" value="CORRECT GUESS" position="-6 4 -1"></a-text>-->
+        <!--    <a-text class="scoreText" color="black" value=" " position="-5.8 3.7 -1"></a-text>-->
+        <!--    <a-box onclick="changeScene()" color="blue" height="2" width="3" depth="2" position="-2 5 -5 "> </a-box>-->
+        <!--    <a-text color="black" value="SKIP" position="-1.75 4 -1"></a-text>-->
+        <!--    <a-entity sound="src:#shipsound; on: click">-->
+        <!--        <a-box color="green" height="2" width="3" depth="2" position="3 5 -5"></a-box>-->
+        <!--        <a-text id="hint" color="black" value="HINT" position="2 4 -1"></a-text>-->
+        <!--    </a-entity>-->
+        <!--    <a-box onclick="reset()" color="yellow" height="2" width="3" depth="2" position="8 5 -5"></a-box>-->
+        <!--    <a-text color="black" value="RESET" position="5.5 4 -1"></a-text>-->
+        <!--</a-entity>-->
+
+    </a-scene>
+    <script src="script.js"></script>
+</body>
+
+
+</html>
